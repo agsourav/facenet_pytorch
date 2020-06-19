@@ -1,7 +1,7 @@
 # facenet_pytorch
 Google's facenet implementation in pytorch for face identification
 
-#directory structure
+# directory structure
 root
   --datasets
     --custom_images
@@ -18,7 +18,7 @@ root
   --triplet_selection.py
   --utils.py
   
- #understanding files
+ # understanding files
  inception_resnet.py : implements inception_resnet_v1 in pytorch
       functions()    : load_weights(model, dname)
                           -model to load the weights to
