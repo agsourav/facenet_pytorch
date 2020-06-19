@@ -55,5 +55,5 @@ utils.py            : utility functions for the module
                             --epochs  : number of epochs for training
                             --train   : 1 for training/ 0 for evaluation
 main.py             : main file                         
-       
+      
 
