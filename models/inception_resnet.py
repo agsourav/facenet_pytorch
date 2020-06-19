@@ -311,11 +311,11 @@ class classification(nn.Module):
         self.num_classes = num_classes
 
         self.logits = nn.Linear(self.in_features, self.num_classes)
-        #self.softmax = nn.Softmax(dim = 1)
+        self.softmax = nn.Softmax(dim = 1)
     
     def forward(self, x):
         x = self.logits(x)
-        #x = self.softmax(x)
+        x = self.softmax(x)
         return x
 
 def load_weights(model, dname):

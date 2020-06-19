@@ -36,10 +36,8 @@ def arg_parse():
     parser = argparse.ArgumentParser(description='Facenet custom face recognition model')
     parser.add_argument('--rootdir', dest = 'rootdir', help = 'path of root directory of dataset',
     default= 'datasets/custom_images', type = str)
-    parser.add_argument('--lrin', dest = 'lr_rate_inception_module',help = 'learning rate of inception module',
+    parser.add_argument('--lr', dest = 'lr_rate',help = 'learning rate',
     default = 0.1)
-    parser.add_argument('--lrcl', dest = 'lr_rate_classification_module', help = 'learning rate of classification module',
-    default = 0.5)
     parser.add_argument('--bs', dest = 'batch', help = 'batch size',
     default = 2)
     parser.add_argument('--ep', dest = 'epochs', help = 'epochs',
@@ -48,7 +46,7 @@ def arg_parse():
     default = 1)
     parser.add_argument('--check', dest = 'checkpoint', help = '1 to start from previous checkpoint/0 to initialise',
     default = 1)
-    parser.add_argument('--check-path', dest = 'checkpoint_path', help = 'file to path to store and load checkpoints',
-    type = str)
+    parser.add_argument('--train-module', dest = 'training_module', help = 'train inception model or classification',
+    default = 'inception', type = str)
     return parser.parse_args()
     
