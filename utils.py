@@ -46,6 +46,9 @@ def arg_parse():
     default = 1)
     parser.add_argument('--train', dest = 'train', help = '1 for training',
     default = 1)
-
+    parser.add_argument('--check', dest = 'checkpoint', help = '1 to start from previous checkpoint/0 to initialise',
+    default = 1)
+    parser.add_argument('--check-path', dest = 'checkpoint_path', help = 'file to path to store and load checkpoints',
+    type = str)
     return parser.parse_args()
     
