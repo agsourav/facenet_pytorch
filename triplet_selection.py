@@ -5,8 +5,10 @@ class TripletSelection():
     def __init__(self, dataloader):
         self.dataloader = dataloader
         self.dataiter = iter(dataloader)
-    def tripletSelection(self):
+    def tripletSelection(self, device):
         images, labels = self.dataiter.next()
+        images = images.to(device)
+        labels = labels.to(device)
         grouping = {}
         if images.shape[0] < 2:
             print('Insufficient images, cannot train further')

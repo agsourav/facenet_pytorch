@@ -18,6 +18,9 @@ train = int(args.train)
 checkpoint = int(args.checkpoint)
 training_module = args.training_module
 
+CUDA = torch.cuda.is_available()
+device = torch.device('cuda' if CUDA else 'cpu')
+
 classes = np.array(os.listdir(root_path))
 print(classes)
 dataloader = load_dataset(root_path,batch_size)
@@ -36,7 +39,7 @@ opt = optim.SGD(model.parameters(), lr = lr)
 #classification module
 classify = classification(final_out_features, len(classes))
 loss_cl = nn.CrossEntropyLoss()
-opt_cl = optim.SGD(classify.parameters(), lr = lr)
+opt_cl = optim.Adam(classify.parameters(), lr = lr)
 
 if train:
 
@@ -48,7 +51,7 @@ if train:
             opt.load_state_dict(checkpoint['optimizer_state_dict'])
             previous_losses = checkpoint['losses']
 
-        losses = train_inception(dataloader, batch_size, model, loss_func, opt, False, epochs)    
+        losses = train_inception(dataloader, batch_size, model, loss_func, opt, device, epochs)    
         
         previous_losses.extend(losses)
         plt.figure()
@@ -56,6 +59,7 @@ if train:
         plt.title('Inception: loss vs epoch')
         plt.xlabel('epochs')
         plt.ylabel('training loss')
+        plt.savefig('training_inception.png')
         plt.show()
         #checkpointing
         checkpoint_inception = {
@@ -79,13 +83,14 @@ if train:
             opt_cl.load_state_dict(checkpoint['optimizer_state_dict'])
             previous_losses = checkpoint['losses']
 
-        losses = train_classification(dataloader, batch_size, model, classify, loss_cl, opt_cl, False, num_epochs = epochs)
+        losses = train_classification(dataloader, batch_size, model, classify, loss_cl, opt_cl, device, num_epochs = epochs)
         previous_losses.extend(losses)
         plt.figure()
         plt.plot(previous_losses)
         plt.title('Classification: loss vs epoch')
         plt.xlabel('epochs')
         plt.ylabel('training loss')
+        plt.savefig('training_classification.png')
         plt.show()
         #checkpointing
         checkpoint_classification = {
@@ -93,7 +98,7 @@ if train:
              'batch_size': batch_size,
              'epochs': epochs,
              'losses': losses,
-             'model_state_dict': classification.state_dict(),
+             'model_state_dict': classify.state_dict(),
              'optimizer_state_dict': opt_cl.state_dict()
             }
         torch.save(checkpoint_classification, 'checkpoints/classification.pt')
@@ -109,17 +114,17 @@ elif not train:
     checkpoint_classification = torch.load('checkpoints/classification.pt')
     model.load_state_dict(checkpoint_inception['model_state_dict'])
     classify.load_state_dict(checkpoint_classification['model_state_dict'])
-
+    dataloader = load_dataset(root_path,batch_size, shuffle = True)
     dataiter = iter(dataloader)
     images, labels = dataiter.next()
     topk = 2
-    evaluate(images, labels, model, classify, topk)
+    pred = evaluate(images, labels, model, classify, topk)
 
     plt.figure()
-    for image in images:
-        print(image.shape)
+    for i,image in enumerate(images):
         img = image.permute(1,2,0)
         plt.imshow(img)
+        plt.title(classes[pred[i]])
         plt.show()
 
 
