@@ -62,6 +62,40 @@ Google's facenet implementation in pytorch for face identification
                             --bs      : batch size for training
                             --epochs  : number of epochs for training
                             --train   : 1 for training/ 0 for evaluation
-6. main.py             : main file                         
+6. main.py             : main file  
+
+------------------------------------------------------------------------------------------
+# Commands
+
+## fine tuning inception_resnet 
+### without checkout (when the model is being fine tuned the first time)
+$ python main.py --lr 0.05 --bs 8 --train 1 --check 0 --ep 100 --train-module inception --rootdir datasets/custom_images
+
+### with checkpoint
+$ python main.py --lr 0.05 --bs 8 --train 1 --check 1 --ep 100 --train-module inception --rootdir datasets/custom_images
+
+## training classification module
+### training the first time
+$ python main.py --lr 0.001 --bs 16 --train 1 --check 0 --ep 50 --train-module classification --rootdir datasets/custom_images
+
+### training with checkpoint
+$ python main.py --lr 0.001 --bs 16 --train 1 --check 0 --ep 50 --train-module classification --rootdir datasets/custom_images
+
+## evaluation
+$ python main.py --train 0
+
+---------------------------------------------------------
+# References
+
+1. github's repo: akshaybahadur21/Facial-Recognition-using-Facenet
+
+2. Google's Facenet paper
+
+The inception resnet module is loaded using either 'casia-webface2' pretrained model or 'vggface2' pretrained inception resnet model, which can be selected at the time of initialising the model using the attribute "pretrained". 
+
+## Note: 
+The project is build for learning purposes and the custom images has been taken with due permission of my friends for a demo use case only. For all other practical purposes, this dataset must be avoided and instead other custom images must be used.
+
+"I thank my fellow colleagues for allowing me to use their images for demo purposes"
       
 

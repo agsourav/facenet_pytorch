@@ -1,2 +1,2 @@
 /datasets/lfw
-/checkpoints
+/checkpoints/*.pt

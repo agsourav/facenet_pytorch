@@ -39,7 +39,7 @@ opt = optim.SGD(model.parameters(), lr = lr)
 #classification module
 classify = classification(final_out_features, len(classes))
 loss_cl = nn.CrossEntropyLoss()
-opt_cl = optim.Adam(classify.parameters(), lr = lr)
+opt_cl = optim.SGD(classify.parameters(), lr = lr, momentum = 0.9)
 
 if train:
 
